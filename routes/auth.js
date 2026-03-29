@@ -63,6 +63,14 @@ router.post('/generate-student', async (req, res) => {
 
   } catch (error) {
     console.error("GENERATION ERROR DETAILS:", error);
+
+    if (error?.code === 11000) {
+      return res.status(500).json({
+        message: "Student creation failed because the database still has an old unique index configuration.",
+        error: error.message
+      });
+    }
+
     res.status(500).json({ 
       message: "Server error generating credentials.",
       error: error.message,
@@ -173,6 +181,14 @@ router.post('/generate-coordinator', async (req, res) => {
 
   } catch (error) {
     console.error("COORD GENERATION ERROR DETAILS:", error);
+
+    if (error?.code === 11000) {
+      return res.status(500).json({
+        message: "Coordinator creation failed because the database still has an old unique index configuration.",
+        error: error.message
+      });
+    }
+
     res.status(500).json({ 
       message: "Server error generating coordinator credentials.",
       error: error.message
